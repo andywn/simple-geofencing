@@ -1,4 +1,4 @@
-package com.technicalnorm.geofencing.entities;
+package com.alnormous.geofencing.entities;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
 

@@ -1,9 +1,9 @@
-package com.technicalnorm.geofencing.data_structures;
+package com.alnormous.geofencing.data_structures;
 
 import java.util.Map;
 import java.util.Set;
 
-import com.technicalnorm.geofencing.entities.Fence;
+import com.alnormous.geofencing.entities.Fence;
 
 /**
  *

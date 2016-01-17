@@ -1,7 +1,7 @@
-package com.technicalnorm.geofencing.utils;
+package com.alnormous.geofencing.utils;
 
-import com.technicalnorm.geofencing.entities.Coordinate;
-import com.technicalnorm.geofencing.entities.Fence;
+import com.alnormous.geofencing.entities.Coordinate;
+import com.alnormous.geofencing.entities.Fence;
 
 public class FenceUtils {
 	

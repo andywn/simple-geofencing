@@ -1,9 +1,9 @@
-package com.technicalnorm.geofencing.selection;
+package com.alnormous.geofencing.selection;
 
 import java.util.Iterator;
 
-import com.technicalnorm.geofencing.entities.Coordinate;
-import com.technicalnorm.geofencing.entities.Fence;
+import com.alnormous.geofencing.entities.Coordinate;
+import com.alnormous.geofencing.entities.Fence;
 
 public class QuadTreeVisitorImpl implements QuadTreeVisitor {
 

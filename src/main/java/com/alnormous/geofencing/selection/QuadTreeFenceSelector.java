@@ -1,4 +1,4 @@
-package com.technicalnorm.geofencing.selection;
+package com.alnormous.geofencing.selection;
 
 import java.util.HashMap;
 import java.util.HashSet;

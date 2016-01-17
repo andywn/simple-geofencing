@@ -1,4 +1,4 @@
-package com.technicalnorm.geofencing.utils;
+package com.alnormous.geofencing.utils;
 
 import java.util.List;
 import java.util.function.ToDoubleBiFunction;
