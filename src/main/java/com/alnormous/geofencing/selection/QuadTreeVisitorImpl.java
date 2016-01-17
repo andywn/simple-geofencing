@@ -2,7 +2,6 @@ package com.alnormous.geofencing.selection;
 
 import java.util.Iterator;
 
-import com.alnormous.geofencing.entities.Coordinate;
 import com.alnormous.geofencing.entities.Fence;
 
 public class QuadTreeVisitorImpl implements QuadTreeVisitor {

@@ -3,7 +3,7 @@ package com.alnormous.geofencing.utils;
 import java.util.List;
 import java.util.function.ToDoubleBiFunction;
 
-import com.technicalnorm.geofencing.entities.Coordinate;
+import com.alnormous.geofencing.entities.Coordinate;
 
 public class AngleUtils {
 	

@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.technicalnorm.geofencing.entities.Coordinate;
-import com.technicalnorm.geofencing.entities.Fence;
-import com.technicalnorm.geofencing.entities.Quadrant;
+import com.alnormous.geofencing.entities.Coordinate;
+import com.alnormous.geofencing.entities.Fence;
+import com.alnormous.geofencing.entities.Quadrant;
 import com.vividsolutions.jts.geom.Envelope;
 
 public class QuadTreeFenceSelector implements FenceSelector {
