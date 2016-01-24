@@ -49,7 +49,12 @@ public class Fence {
 	}
 	
 	
-	public boolean overlap(Envelope envelope) {
+	public boolean overlapsOrContains(Envelope envelope) {
+		if (contains(envelope)) {
+			return true;
+		} if (envelope.contains(polygon.getEnvelopeInternal())) {
+			return true;
+		}
 		return polygon.overlaps(factory.toGeometry(envelope));
 	}
 	

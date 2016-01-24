@@ -2,6 +2,6 @@ package com.alnormous.geofencing.selection;
 
 public interface QuadTreeVisitor {
 	
-	public void visit(Node node);
+	public void visit(Node node) throws Exception;
 
 }

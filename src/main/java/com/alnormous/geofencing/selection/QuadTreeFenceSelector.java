@@ -42,13 +42,22 @@ public class QuadTreeFenceSelector implements FenceSelector {
 	@Override
 	public Optional<Fence> selectFence(Coordinate coord) {
 		Set<Fence> fences = node.getFence(coord);
-		if (fences.size() == 0) {
+		if (fences.size() == 0 || fences == null) {
 			return Optional.empty();
 		} else if (fences.size() == 1) {
 			return Optional.of(fences.iterator().next());
 		} else {
 			return fences.parallelStream().filter(coord::isPointInFence).findAny();
 		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("Root\n");
+		result.append(node.toString());
+		result.append("\n");
+		return result.toString();
 	}
 
 }
@@ -58,6 +67,10 @@ class Node {
 	private Coordinate center;
 	private Coordinate upperLeft;
 	private Coordinate lowerRight;
+	
+	// Only one fence occupies this node.
+	// TODO: Find a better name for this variable.
+	private boolean soleFenceOccupancy = false;
 	
 	private Map<Quadrant, Node> nodes = new HashMap<>();
 	private Set<Fence> fences = new HashSet<>();
@@ -73,7 +86,12 @@ class Node {
 	}
 	
 	public void accept(QuadTreeVisitor visitor) {
-		visitor.visit(this);
+		try {
+			visitor.visit(this);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Optional<Node> getNode(Quadrant quadrant) {
@@ -97,14 +115,22 @@ class Node {
 	}
 	
 	public void splitQuadrant() {
-		nodes.put(Quadrant.ABOVE_LEFT, new Node(this.upperLeft, this.center, depth+1));
-		nodes.put(Quadrant.BELOW_RIGHT, new Node(this.center, this.lowerRight, depth+1));
-		Coordinate upperMid = new Coordinate(this.center.getX(), this.upperLeft.getY());
-		Coordinate centerRight = new Coordinate(this.lowerRight.getX(), this.center.getY());
-		nodes.put(Quadrant.ABOVE_RIGHT, new Node(upperMid, centerRight, depth+1));
-		Coordinate centerLeft = new Coordinate(this.upperLeft.getX(), this.center.getY());
-		Coordinate lowerMid = new Coordinate(this.center.getX(), this.lowerRight.getY());
-		nodes.put(Quadrant.BELOW_LEFT, new Node(centerLeft, lowerMid, depth+1));
+		if (!nodes.containsKey(Quadrant.ABOVE_LEFT)) {
+			nodes.put(Quadrant.ABOVE_LEFT, new Node(this.upperLeft, this.center, depth+1));
+		}
+		if (!nodes.containsKey(Quadrant.BELOW_RIGHT)) {
+			nodes.put(Quadrant.BELOW_RIGHT, new Node(this.center, this.lowerRight, depth+1));
+		}
+		if (!nodes.containsKey(Quadrant.ABOVE_RIGHT)) {
+			Coordinate upperMid = new Coordinate(this.center.getX(), this.upperLeft.getY());
+			Coordinate centerRight = new Coordinate(this.lowerRight.getX(), this.center.getY());
+			nodes.put(Quadrant.ABOVE_RIGHT, new Node(upperMid, centerRight, depth+1));
+		}
+		if (!nodes.containsKey(Quadrant.BELOW_LEFT)) {
+			Coordinate centerLeft = new Coordinate(this.upperLeft.getX(), this.center.getY());
+			Coordinate lowerMid = new Coordinate(this.center.getX(), this.lowerRight.getY());
+			nodes.put(Quadrant.BELOW_LEFT, new Node(centerLeft, lowerMid, depth+1));
+		}
 	}
 	
 	public Set<Fence> getFences() {
@@ -117,6 +143,34 @@ class Node {
 	
 	public int getDepth() {
 		return depth;
+	}
+	
+	public boolean isSoleFenceOccupancy() {
+		return soleFenceOccupancy;
+	}
+
+	public void setSoleFenceOccupancy(boolean soleFenceOccupancy) {
+		this.soleFenceOccupancy = soleFenceOccupancy;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder result = new StringBuilder();
+		result.append("Node depth: ");
+		result.append(this.getDepth());
+		result.append("\n");
+		result.append("Fences: ");
+		for (Fence f: fences) {
+			result.append(f.getName());
+			result.append(",");
+		}
+		for (Quadrant q: nodes.keySet()) {
+			result.append(q.toString());
+			result.append(": ");
+			result.append(nodes.get(q).toString());
+			result.append("\n");
+		}
+		return result.toString();
 	}
 	
 }

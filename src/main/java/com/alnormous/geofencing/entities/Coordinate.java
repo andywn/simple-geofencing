@@ -15,11 +15,11 @@ public class Coordinate extends com.vividsolutions.jts.geom.Coordinate {
 	public Coordinate(double x, double y)
 	{
 		super(x, y);
-		
+		updatePoint();
 	}
 	
 	private void updatePoint() {
-		JTSFactoryFinder.getGeometryFactory().createPoint(this);
+		point = JTSFactoryFinder.getGeometryFactory().createPoint(this);
 	}
 	
 	
