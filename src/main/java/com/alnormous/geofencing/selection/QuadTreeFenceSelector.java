@@ -60,6 +60,12 @@ public class QuadTreeFenceSelector implements FenceSelector {
 		return result.toString();
 	}
 
+	public Set<Fence> getFences() {
+		return fences;
+	}
+	
+	
+
 }
 
 class Node {
