@@ -76,14 +76,9 @@
 			<version>${geotools.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-swing</artifactId>
-			<version>${geotools.version}</version>
+		  <groupId>com.esri.geometry</groupId>
+		  <artifactId>esri-geometry-api</artifactId>
+		  <version>1.2.1</version>
 		</dependency>
-		<dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-epsg-hsql</artifactId>
-            <version>${geotools.version}</version>
-        </dependency>
 	</dependencies>
 </project>
