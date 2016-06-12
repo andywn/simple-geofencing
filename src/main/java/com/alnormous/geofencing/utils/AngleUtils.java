@@ -1,6 +1,7 @@
 package com.alnormous.geofencing.utils;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.alnormous.geofencing.entities.Coordinate;
 
@@ -12,8 +13,17 @@ public class AngleUtils {
 	public static Double calculateLength(Coordinate a, Coordinate b) { 
 		return Math.sqrt((Math.pow(a.getX() - b.getX(), 2) + Math.pow(a.getY() - b.getY(), 2)));
 	}
-			
-	//arcos((P122 + P132 - P232) / (2 * P12 * P13))
+
+	/**
+	 * Calculate the inside angle made by three points a -> b -> c
+	 * 
+	 * arcos((P122 + P132 - P232) / (2 * P12 * P13))
+	 * 
+	 * @param a
+	 * @param b
+	 * @param c
+	 * @return
+	 */
 	public static Double calculateMinAngle(Coordinate a, Coordinate b, Coordinate c) {
 		return Math.acos(
 				(Math.pow(calculateLength(a, b), 2) + Math.pow(calculateLength(a, c), 2) - Math.pow(calculateLength(c, b), 2))
@@ -22,15 +32,15 @@ public class AngleUtils {
 		
 	};
 	
-	public static Double calculateMinAngleFromList(List<Coordinate> list, Integer index) {
+	public static Optional<Double> calculateMinAngleFromList(List<Coordinate> list, Integer index) {
 		if (list.size() < 3)
 		{
-			return -1.0D;
+			return Optional.empty();
 		} else {
-			return calculateMinAngle(
+			return Optional.of(calculateMinAngle(
 					list.get((index == 0)?list.size()-1:index-1),
 					list.get(index),
-					list.get((index == list.size()-1)?0:index));
+					list.get((index == list.size()-1)?0:index)));
 		}
 	};
 

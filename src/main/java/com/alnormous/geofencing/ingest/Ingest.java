@@ -10,6 +10,6 @@ import com.alnormous.geofencing.selection.QuadTreeFenceSelector;
 
 public interface Ingest {
 	
-	public Optional<QuadTreeFenceSelector> readFile(File input, Function<SimpleFeature, String> fenceIdGen) throws Exception;
+	public Optional<QuadTreeFenceSelector> readFile(Function<SimpleFeature, String> fenceIdGen, File... input) throws Exception;
 
 }

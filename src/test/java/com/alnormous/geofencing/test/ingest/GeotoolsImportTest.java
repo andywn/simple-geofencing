@@ -26,7 +26,7 @@ public class GeotoolsImportTest {
 		
 		GeotoolsImport geoImport = new GeotoolsImport();
 		
-        QuadTreeFenceSelector selector = geoImport.readFile(file, (f) -> (String)f.getAttribute("elect_div")).get();
+        QuadTreeFenceSelector selector = geoImport.readFile((f) -> (String)f.getAttribute("elect_div"), file).get();
         
         Optional<Fence> fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(145.0,  -35.0));
         fence.ifPresent((f) -> System.out.println(f.getName()));
