@@ -23,11 +23,21 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 
 public class GeotoolsImport implements Ingest {
 	
+	private Set<Fence> fences;
+	private Coordinate topLeft, bottomRight;
+	
+	public GeotoolsImport() {
+		fences = new HashSet<>();
+		topLeft = null;
+		bottomRight = null;
+	}
+	
 	@Override
-	public Optional<QuadTreeFenceSelector> readFile(Function<SimpleFeature, String> fenceIdGen, File... inputFiles) throws Exception {
-		Set<Fence> fences = new HashSet<>();
-		Coordinate topLeft = null;
-        Coordinate bottomRight = null;
+	public Ingest readFile(String attribute, File... input) throws Exception {
+		return readFile((f) -> (String)f.getAttribute(attribute), input);
+	}
+	
+	public Ingest readFile(Function<SimpleFeature, String> fenceIdGen, File... inputFiles) throws Exception {
 		for (File input: inputFiles) {
 			FileDataStore dataStore = FileDataStoreFinder.getDataStore(input);
 	        SimpleFeatureSource shapefileSource = dataStore
@@ -64,10 +74,17 @@ public class GeotoolsImport implements Ingest {
 	        		}
 	        		fences.add(new Fence(coordList, fenceIdGen.apply(feature)));
 	        	}
-	        	
 	        }
+	        iterator.close();
+	        dataStore.getFeatureReader().close();
+	        dataStore.dispose();
 		}
-		if (fences.size() == 0) {
+		return this;
+	}
+	
+	@Override
+	public Optional<FenceSelector> build() {
+		if (fences == null || fences.size() == 0 || topLeft == null || bottomRight == null) {
         	return Optional.empty();
         }
         QuadTreeFenceSelector selector = new QuadTreeFenceSelector(fences, topLeft, bottomRight);

@@ -2,14 +2,12 @@ package com.alnormous.geofencing.ingest;
 
 import java.io.File;
 import java.util.Optional;
-import java.util.function.Function;
 
-import org.opengis.feature.simple.SimpleFeature;
-
-import com.alnormous.geofencing.selection.QuadTreeFenceSelector;
+import com.alnormous.geofencing.selection.FenceSelector;
 
 public interface Ingest {
 	
-	public Optional<QuadTreeFenceSelector> readFile(Function<SimpleFeature, String> fenceIdGen, File... input) throws Exception;
+	public Ingest readFile(String attribute, File... input) throws Exception;
+	public Optional<FenceSelector> build();
 
 }

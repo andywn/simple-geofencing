@@ -42,7 +42,7 @@ public class QuadTreeFenceSelector implements FenceSelector {
 	@Override
 	public Optional<Fence> selectFence(Coordinate coord) {
 		Set<Fence> fences = node.getFence(coord);
-		if (fences.size() == 0 || fences == null) {
+		if (fences == null || fences.size() == 0) {
 			return Optional.empty();
 		} else if (fences.size() == 1) {
 			return Optional.of(fences.iterator().next());

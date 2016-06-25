@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.alnormous.geofencing.entities.Fence;
 import com.alnormous.geofencing.ingest.GeotoolsImport;
-import com.alnormous.geofencing.selection.QuadTreeFenceSelector;
+import com.alnormous.geofencing.selection.FenceSelector;
 
 /**
  * This test requires the NSW electoral map shape files to run.
@@ -20,13 +20,13 @@ import com.alnormous.geofencing.selection.QuadTreeFenceSelector;
 public class GeotoolsImportTest {
 	
 	@Test
-	public void test() throws Exception {
+	public void testNSW() throws Exception {
 		
 		File file = new File("src/test/resources/NSW_SA1s_25-02-2016.shp");
 		
 		GeotoolsImport geoImport = new GeotoolsImport();
 		
-        QuadTreeFenceSelector selector = geoImport.readFile((f) -> (String)f.getAttribute("elect_div"), file).get();
+        FenceSelector selector = geoImport.readFile((f) -> (String)f.getAttribute("elect_div"), file).build().get();
         
         Optional<Fence> fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(145.0,  -35.0));
         fence.ifPresent((f) -> System.out.println(f.getName()));
@@ -35,5 +35,7 @@ public class GeotoolsImportTest {
         Assert.assertEquals("Farrer", fence.get().getName());
 		
 	}
+	
+	
 
 }
