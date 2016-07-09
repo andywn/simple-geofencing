@@ -1,5 +1,6 @@
 package com.alnormous.geofencing.entities;
 
+import java.awt.geom.Area;
 import java.util.List;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -9,6 +10,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 public class Fence {
@@ -19,7 +21,7 @@ public class Fence {
 	private GeometryFactory factory;
 	
 	
-	public Fence(List<Coordinate> coordinates, String name) throws FenceValidationException {
+	public Fence(List<Coordinate> coordinates, String name, String id) throws FenceValidationException {
 		if (coordinates.size() < 3) {
 			throw new FenceValidationException();
 		}
@@ -38,6 +40,7 @@ public class Fence {
 		polygon = factory.createPolygon(sequence);
 		
 		this.name = name;
+		this.id = id;
 	}
 	
 	public boolean contains(Coordinate coord) {
@@ -46,6 +49,16 @@ public class Fence {
 	
 	public boolean contains(Envelope envelope) {
 		return polygon.contains(factory.toGeometry(envelope));
+	}
+	
+	public Double overlapArea(Envelope envelope) {
+		try {
+			return factory.toGeometry(envelope).intersection(polygon).getArea();
+		} catch (TopologyException e) {
+			return 0.0;
+		}
+		
+		//return polygon.union(factory.toGeometry(envelope)).getArea();
 	}
 	
 	

@@ -35,14 +35,14 @@ public class QuadTreeTest {
 		points.add(new Coordinate(0.001,-2.001));
 		points.add(new Coordinate(-2.001, -2.001));
 		
-		Fence fence = new Fence(points, "fence1");
+		Fence fence = new Fence(points, "fence1", "fence1");
 		
 		List<Coordinate> points2 = new ArrayList<>();
 		points2.add(new Coordinate(0.001,2.001));
 		points2.add(new Coordinate(0.001, -2.001));
 		points2.add(new Coordinate(2.001, -2.001));
 		points2.add(new Coordinate(2.001, 2.001));
-		Fence fence2 = new Fence(points2, "fence2");
+		Fence fence2 = new Fence(points2, "fence2", "fence2");
 		
 		Set<Fence> fences = new HashSet<>();
 		fences.add(fence);

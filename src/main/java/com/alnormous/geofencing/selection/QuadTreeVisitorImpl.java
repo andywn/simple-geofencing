@@ -8,7 +8,7 @@ public class QuadTreeVisitorImpl implements QuadTreeVisitor {
 
 	private Fence fence;
 	
-	private static int MAX_DEPTH = 3;
+	private static int MAX_DEPTH = 6;
 	
 	public QuadTreeVisitorImpl(Fence fence) {
 		this.fence = fence;

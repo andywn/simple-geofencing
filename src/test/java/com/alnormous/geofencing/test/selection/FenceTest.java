@@ -33,7 +33,7 @@ public class FenceTest {
 		points.add(new Coordinate(1.000,-2.000));
 		points.add(new Coordinate(-2.000, -2.000));
 		
-		Fence fence = new Fence(points, "fence1");
+		Fence fence = new Fence(points, "fence1", "fence1");
 		
 		return fence;
 		
@@ -84,7 +84,7 @@ public class FenceTest {
 		points2.add(new Coordinate(0.000, -2.000));
 		points2.add(new Coordinate(2.000, -2.000));
 		points2.add(new Coordinate(2.000, 2.000));
-		Fence fence = new Fence(points2, "fence2");
+		Fence fence = new Fence(points2, "fence2", "fence2");
 		Envelope envelope3 = new Envelope(new Coordinate(-3.000, 3.000), new Coordinate(3.000, -3.000));
 		Assert.assertTrue(fence.overlapsOrContains(envelope3)); // Contained by envelope
 		

@@ -33,11 +33,11 @@ public class GeotoolsImport implements Ingest {
 	}
 	
 	@Override
-	public Ingest readFile(String attribute, File... input) throws Exception {
-		return readFile((f) -> (String)f.getAttribute(attribute), input);
+	public GeotoolsImport readFile(String attribute, File... input) throws Exception {
+		return readFile((f) -> (String)f.getAttribute(attribute), (f) -> (String)f.getAttribute(attribute), input);
 	}
 	
-	public Ingest readFile(Function<SimpleFeature, String> fenceIdGen, File... inputFiles) throws Exception {
+	public GeotoolsImport readFile(Function<SimpleFeature, String> fenceIdGen, Function<SimpleFeature, String> fenceNameGen, File... inputFiles) throws Exception {
 		for (File input: inputFiles) {
 			FileDataStore dataStore = FileDataStoreFinder.getDataStore(input);
 	        SimpleFeatureSource shapefileSource = dataStore
@@ -72,7 +72,7 @@ public class GeotoolsImport implements Ingest {
 	        				}
 	        			}
 	        		}
-	        		fences.add(new Fence(coordList, fenceIdGen.apply(feature)));
+	        		fences.add(new Fence(coordList, fenceNameGen.apply(feature), fenceIdGen.apply(feature)));
 	        	}
 	        }
 	        iterator.close();
@@ -88,7 +88,6 @@ public class GeotoolsImport implements Ingest {
         	return Optional.empty();
         }
         QuadTreeFenceSelector selector = new QuadTreeFenceSelector(fences, topLeft, bottomRight);
-        
         return Optional.of(selector);
 	}
 

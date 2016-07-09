@@ -36,6 +36,8 @@ public class QuadTreeFenceSelector implements FenceSelector {
 		for (Fence f: fences) {
 			node.accept(new QuadTreeVisitorImpl(f));
 		}
+		// Clean up fences.
+		node.accept(new QuadTreePostProcessorVisitor());
 	}
 
 	@Override
@@ -78,7 +80,6 @@ class Node {
 	private Coordinate lowerRight;
 	
 	// Only one fence occupies this node.
-	// TODO: Find a better name for this variable.
 	private boolean soleFenceOccupancy = false;
 	
 	private Map<Quadrant, Node> nodes = new HashMap<>();
@@ -146,6 +147,10 @@ class Node {
 		return fences;
 	}
 	
+	public void resetFences() {
+		this.fences = new HashSet<>();
+	}
+	
 	public Envelope getEnvelope() {
 		return envelope;
 	}
@@ -160,6 +165,9 @@ class Node {
 
 	public void setSoleFenceOccupancy(boolean soleFenceOccupancy) {
 		this.soleFenceOccupancy = soleFenceOccupancy;
+		if (soleFenceOccupancy == true) {
+			this.nodes = new HashMap<>(); // Clear children if this is a sole occupancy node.
+		}
 	}
 
 	@Override
