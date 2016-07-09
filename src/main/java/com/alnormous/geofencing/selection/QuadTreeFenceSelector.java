@@ -25,7 +25,6 @@ public class QuadTreeFenceSelector implements FenceSelector {
 	 * <li>If so, do any of the lines between points cross the quad square?</li>
 	 * <li>If not, then this whole quad belongs to the fence.  Assign.</li>
 	 * </ol>
-
 	 * 
 	 * @param fences
 	 * @param boundaryX
@@ -45,7 +44,11 @@ public class QuadTreeFenceSelector implements FenceSelector {
 		if (fences == null || fences.size() == 0) {
 			return Optional.empty();
 		} else if (fences.size() == 1) {
-			return Optional.of(fences.iterator().next());
+			if (coord.isPointInFence(fences.iterator().next())) {
+				return Optional.of(fences.iterator().next());
+			} else {
+				return Optional.empty();
+			}
 		} else {
 			return fences.parallelStream().filter(coord::isPointInFence).findAny();
 		}
