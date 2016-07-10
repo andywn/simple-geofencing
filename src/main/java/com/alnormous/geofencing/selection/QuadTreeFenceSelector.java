@@ -30,14 +30,23 @@ public class QuadTreeFenceSelector implements FenceSelector {
 	 * @param boundaryX
 	 * @param boundaryY
 	 */
-	public QuadTreeFenceSelector(Set<Fence> fences, Coordinate upperLeft, Coordinate lowerRight) {
+	public QuadTreeFenceSelector(Set<Fence> fences, Coordinate upperLeft, Coordinate lowerRight, int depth) {
 		node = new Node(upperLeft, lowerRight, 1);
 		this.fences = fences;
 		for (Fence f: fences) {
-			node.accept(new QuadTreeVisitorImpl(f));
+			if (depth > 0) {
+				node.accept(new QuadTreeVisitorImpl(f, depth));
+			} else {
+				node.accept(new QuadTreeVisitorImpl(f));
+			}
+			
 		}
 		// Clean up fences.
 		node.accept(new QuadTreePostProcessorVisitor());
+	}
+	
+	public QuadTreeFenceSelector(Set<Fence> fences, Coordinate upperLeft, Coordinate lowerRight) {
+		this(fences, upperLeft, lowerRight, -1);
 	}
 
 	@Override

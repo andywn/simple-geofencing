@@ -8,10 +8,16 @@ public class QuadTreeVisitorImpl implements QuadTreeVisitor {
 
 	private Fence fence;
 	
-	private static int MAX_DEPTH = 6;
+	private int maxDepth;
 	
 	public QuadTreeVisitorImpl(Fence fence) {
+		this.maxDepth = 6; // Default
 		this.fence = fence;
+	}
+	
+	public QuadTreeVisitorImpl(Fence fence, int depth) {
+		this.fence = fence;
+		this.maxDepth = depth;
 	}
 	
 	@Override
@@ -28,14 +34,17 @@ public class QuadTreeVisitorImpl implements QuadTreeVisitor {
 			return;
 		}
 		if (node.isSoleFenceOccupancy()) {
-			// We're in trouble.
-			throw new OverlappingFencesException("Fence " + fence.toString() + " overlaps another fence");
+			if (!fence.getId().equals(node.getFences().iterator().next().getId())) {
+				// Fence overlap exists.
+				throw new OverlappingFencesException("Fence " + fence.toString() + " overlaps another fence");
+			}
 		}
-		if (node.getDepth() >= MAX_DEPTH) {
+		if (node.getDepth() >= maxDepth) {
 			node.getFences().add(fence);
 			return;
 		}
 		
+		// Generate four quadrants under this node.
 		node.splitQuadrant();
 		
 		Iterator<Node> iterator = node.getIterator();

@@ -22,7 +22,7 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class QuadTreePostProcessorVisitor implements QuadTreeVisitor {
 	
-	private static final double acceptableErrorMargin = 0.1;
+	private static final double acceptableErrorMargin = 0.0001;
 
 	@Override
 	public void visit(Node node) throws Exception {
@@ -32,12 +32,10 @@ public class QuadTreePostProcessorVisitor implements QuadTreeVisitor {
 				// First, break up fences by fence id
 				Map<String, List<Fence>> fences = node.getFences().stream().collect(Collectors.groupingBy(f -> (f.getId() == null)?"null":f.getId()));
 				if (fences.keySet().size() == 1) { // Candidate for merging
-					System.out.println("Size 1, possible merging");
 					// Calculate sum of area inside node envelope
 					double area = fences.get(fences.keySet().iterator().next()).stream()
 						.mapToDouble(f -> f.overlapArea(node.getEnvelope()))
 						.sum();
-					System.out.println("Difference: " + area + " compared to " + node.getEnvelope().getArea());
 					if (Math.abs(area - node.getEnvelope().getArea()) < acceptableErrorMargin) {
 						node.setSoleFenceOccupancy(true);
 						Fence randomFence = node.getFences().iterator().next();
@@ -45,10 +43,7 @@ public class QuadTreePostProcessorVisitor implements QuadTreeVisitor {
 						String id = randomFence.getId();
 						node.resetFences();
 						node.getFences().add(buildFenceFromEnvelope(node.getEnvelope(), name, id));
-						System.out.println("SUCCESS");
 					}
-				} else {
-					System.out.println("No fence love: " + fences.keySet());
 				}
 			}
 			// Visit children

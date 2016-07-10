@@ -28,14 +28,15 @@ public class GeotoolsImportTest {
 		GeotoolsImport geoImport = new GeotoolsImport();
 		
         FenceSelector selector = geoImport.readFile((f) -> (String)f.getAttribute("elect_div"),
-        		(f) -> (String)f.getAttribute("elect_div"), file).build().get();
+        		(f) -> (String)f.getAttribute("elect_div"), file)
+        		.setTreeDepth(4).build().get();
         
         Optional<Fence> fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(145.0,  -35.0));
+        
         fence.ifPresent((f) -> System.out.println(f.getName()));
         
         Assert.assertTrue(fence.isPresent());
         Assert.assertEquals("Farrer", fence.get().getName());
-		
 	}
 	
 	@Test

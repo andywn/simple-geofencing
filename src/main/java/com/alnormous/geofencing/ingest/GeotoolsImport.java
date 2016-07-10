@@ -25,6 +25,7 @@ public class GeotoolsImport implements Ingest {
 	
 	private Set<Fence> fences;
 	private Coordinate topLeft, bottomRight;
+	private int depth;
 	
 	public GeotoolsImport() {
 		fences = new HashSet<>();
@@ -82,12 +83,22 @@ public class GeotoolsImport implements Ingest {
 		return this;
 	}
 	
+	public GeotoolsImport setTreeDepth(int depth) {
+		this.depth = depth;
+		return this;
+	}
+	
 	@Override
 	public Optional<FenceSelector> build() {
 		if (fences == null || fences.size() == 0 || topLeft == null || bottomRight == null) {
         	return Optional.empty();
         }
-        QuadTreeFenceSelector selector = new QuadTreeFenceSelector(fences, topLeft, bottomRight);
+		QuadTreeFenceSelector selector;
+        if (depth > 0) {
+        	selector = new QuadTreeFenceSelector(fences, topLeft, bottomRight, depth);
+        } else {
+        	selector = new QuadTreeFenceSelector(fences, topLeft, bottomRight);
+        }
         return Optional.of(selector);
 	}
 
