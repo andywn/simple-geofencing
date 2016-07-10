@@ -43,6 +43,8 @@ public class QuadTreePostProcessorVisitor implements QuadTreeVisitor {
 						String id = randomFence.getId();
 						node.resetFences();
 						node.getFences().add(buildFenceFromEnvelope(node.getEnvelope(), name, id));
+					} else {
+						System.out.println(Math.abs(area - node.getEnvelope().getArea()));
 					}
 				}
 			}

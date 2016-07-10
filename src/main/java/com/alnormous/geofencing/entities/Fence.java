@@ -1,6 +1,5 @@
 package com.alnormous.geofencing.entities;
 
-import java.awt.geom.Area;
 import java.util.List;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -51,7 +50,7 @@ public class Fence {
 		return polygon.contains(factory.toGeometry(envelope));
 	}
 	
-	public Double overlapArea(Envelope envelope) {
+	public double overlapArea(Envelope envelope) {
 		try {
 			return factory.toGeometry(envelope).intersection(polygon).getArea();
 		} catch (TopologyException e) {
