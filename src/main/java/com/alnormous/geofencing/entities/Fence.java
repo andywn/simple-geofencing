@@ -1,6 +1,8 @@
 package com.alnormous.geofencing.entities;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
 
@@ -18,6 +20,7 @@ public class Fence {
 	private String name;
 	private String id;
 	private GeometryFactory factory;
+	private Map<String, String> attributes = new HashMap<>();
 	
 	
 	public Fence(List<Coordinate> coordinates, String name, String id) throws FenceValidationException {
@@ -98,6 +101,19 @@ public class Fence {
 		this.id = id;
 	}
 	
+	public String getAttribute(String attribute) {
+		return (attributes != null) ? attributes.get(attribute) : null;
+	}
 	
+	public Map<String, String> getAttributes() {
+		return attributes;
+	}
+	
+	public void addAttribute(String id, String val) {
+		if (attributes == null) {
+			attributes = new HashMap<>();
+		}
+		attributes.put(id, val);
+	}
 
 }

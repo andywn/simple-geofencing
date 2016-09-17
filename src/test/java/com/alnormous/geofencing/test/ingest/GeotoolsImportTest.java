@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import com.alnormous.geofencing.entities.Fence;
 import com.alnormous.geofencing.ingest.GeotoolsImport;
+import com.alnormous.geofencing.ingest.Ingest;
+import com.alnormous.geofencing.ingest.MIFGeotoolsImport;
 import com.alnormous.geofencing.selection.FenceSelector;
 
 /**
@@ -75,21 +77,26 @@ public class GeotoolsImportTest {
 		
 	}
 	
-	public void testVIC() throws Exception {
+	@Test
+	public void testNationalSHP() throws Exception {
 		
-		File file = new File("src/test/resources/vic24122010.shp");
+		File file = new File("src/test/resources/national-shp.shp");
 		
 		GeotoolsImport geoImport = new GeotoolsImport();
 		
-		FenceSelector selector = geoImport.readFile((f) -> (String)f.getAttribute("ELECT_DIV"), 
-				(f) -> (String)f.getAttribute("ELECT_DIV"), file).build().get();
+		FenceSelector selector = geoImport.readFile("Elect_div", file).addAttributes("State").build().get();
         
         Optional<Fence> fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(144.7729576,-37.9716929));
+
+        fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(144.5695493,-24.5663331));
         fence.ifPresent((f) -> System.out.println(f.getName()));
+        Assert.assertEquals("Maranoa", fence.get().getName());
+        System.out.println(fence.get().getAttribute("state"));
         
-        Assert.assertTrue(fence.isPresent());
-        Assert.assertEquals("Farrer", fence.get().getName());
-		
+        fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(149.1249668, -35.275248));
+        fence.ifPresent((f) -> System.out.println(f.getName()));
+        Assert.assertEquals("Canberra", fence.get().getName());
+        System.out.println(fence.get().getAttribute("state"));
 	}
 	
 	@Test
