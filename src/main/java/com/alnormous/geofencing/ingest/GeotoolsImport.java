@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.geotools.data.FileDataStore;
@@ -125,13 +126,16 @@ public class GeotoolsImport implements Ingest {
 	        				}
 	        			}
 	        		}
-	        		Fence f = new Fence(coordList, fenceNameGen.apply(feature), fenceIdGen.apply(feature));
+	        		Fence fence = new Fence(coordList, fenceNameGen.apply(feature), fenceIdGen.apply(feature));
 	        		if (files.attributes != null) {
 	        			for (String id: files.attributes) {
-	        				f.addAttribute(id, (String)feature.getAttribute(id));
+	        				fence.addAttribute(id, (String)feature.getAttribute(id));
 	        			}
 	        		}
-	        		fences.add(f);
+	        		if (lastFileImport.operationOnCreation != null) {
+	        			lastFileImport.operationOnCreation.accept(fence);
+	        		}
+	        		fences.add(fence);
 	        	}
 	        }
 	        iterator.close();
@@ -168,6 +172,13 @@ public class GeotoolsImport implements Ingest {
 		lastFileImport.attributes = attributes;
 		return this;
 	}
+
+	@Override
+	public void setOnCreation(Consumer<Fence> onCreation) {
+		if (lastFileImport != null) {
+			lastFileImport.operationOnCreation = onCreation;
+		}
+	}
 	
 }
 
@@ -178,6 +189,7 @@ class ImportFiles {
 	String crsSource;
 	String crsTarget;
 	String[] attributes;
+	Consumer<Fence> operationOnCreation;
 	
 	public ImportFiles(File[] files, Function<SimpleFeature, String> fenceIdGen,
 			Function<SimpleFeature, String> fenceNameGen) {

@@ -59,8 +59,6 @@ public class Fence {
 		} catch (TopologyException e) {
 			return 0.0;
 		}
-		
-		//return polygon.union(factory.toGeometry(envelope)).getArea();
 	}
 	
 	
@@ -70,7 +68,11 @@ public class Fence {
 		} if (envelope.contains(polygon.getEnvelopeInternal())) {
 			return true;
 		}
-		return polygon.overlaps(factory.toGeometry(envelope));
+		try {
+			return polygon.overlaps(factory.toGeometry(envelope));
+		} catch (TopologyException te) {
+			return false;
+		}
 	}
 	
 

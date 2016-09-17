@@ -91,12 +91,12 @@ public class GeotoolsImportTest {
         fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(144.5695493,-24.5663331));
         fence.ifPresent((f) -> System.out.println(f.getName()));
         Assert.assertEquals("Maranoa", fence.get().getName());
-        System.out.println(fence.get().getAttribute("state"));
+        System.out.println(fence.get().getAttribute("State"));
         
         fence = selector.selectFence(new com.alnormous.geofencing.entities.Coordinate(149.1249668, -35.275248));
         fence.ifPresent((f) -> System.out.println(f.getName()));
         Assert.assertEquals("Canberra", fence.get().getName());
-        System.out.println(fence.get().getAttribute("state"));
+        System.out.println(fence.get().getAttribute("State"));
 	}
 	
 	@Test
